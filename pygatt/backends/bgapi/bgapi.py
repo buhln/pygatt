@@ -43,6 +43,8 @@ log = logging.getLogger(__name__)
 
 BLED112_VENDOR_ID = 0x2458
 BLED112_PRODUCT_ID = 0x0001
+#BLED112_VENDOR_ID = 0x0403  # Laird BT5
+#BLED112_PRODUCT_ID = 0x6001 # Laird BT5
 MAX_CONNECTION_ATTEMPTS = 10
 
 
@@ -172,7 +174,7 @@ class BGAPIBackend(BLEBackend):
                 self._ser = None
 
                 self._ser = serial.Serial(serial_port, baudrate=115200,
-                                          timeout=0.25)
+                                          timeout=0.5)
                 # Wait until we can actually read from the device
                 self._ser.read()
                 break
@@ -189,7 +191,7 @@ class BGAPIBackend(BLEBackend):
             raise NotConnectedError("Unable to reconnect with USB "
                                     "device after rebooting")
 
-    def start(self, reset=True, delay_after_reset_s=1):
+    def start(self, reset=True, delay_after_reset_s=2):
         """
         Connect to the USB adapter, reset its state and start a background
         receiver thread.
